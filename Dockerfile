@@ -1,19 +1,17 @@
 FROM python:3.7
 MAINTAINER Frank Bertsch <frank@mozilla.com>
 
-RUN mkdir /app && \
-    chown 10001:10001 /app && \
-    groupadd --gid 10001 app && \
-    useradd --no-create-home --uid 10001 --gid 10001 --home-dir /app app
-
+# Guidelines here: https://github.com/mozilla-services/Dockerflow/blob/master/docs/building-container.md
 ARG RUST_SPEC=stable
 ARG USER_ID="10001"
-ARG USER="rust"
-ARG HOME=/home/${USER}
+ARG GROUP="app"
+ARG HOME="/app"
 
 ENV HOME=${HOME}
-ENV USER=${USER}
-RUN useradd -o -u ${USER_ID} -m ${USER}
+RUN mkdir ${HOME} && \
+    chown ${USER_ID}:${USER_ID} ${HOME} && \
+    groupadd --gid ${USER_ID} ${GROUP} && \
+    useradd --no-create-home --uid 10001 --gid 10001 --home-dir /app ${GROUP}
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
