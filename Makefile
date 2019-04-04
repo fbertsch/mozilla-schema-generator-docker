@@ -3,11 +3,11 @@
 help:
 	@echo "Mozilla Schema Generator - Dockerized\n"
 	@echo "The list of commands for local development:\n"
-	@echo "  build      Builds the docker images for the docker-compose setup"
-	@echo "  clean      Stops and removes all docker containers"
-	@echo "  run        Run the a command"
-	@echo "  generate   Generate the schemas"
-	@echo "  shell      Opens a Bash shell"
+	@echo "  build       Builds the docker images for the docker-compose setup"
+	@echo "  clean       Stops and removes all docker containers"
+	@echo "  run         Run a command. Can run scripts, e.g. `make run COMMAND="./scripts/schema_generator.sh"
+    @echo "  test-script Run a local script. e.g. `make test-script SCRIPT="a-local-script.sh"`
+	@echo "  shell       Opens a Bash shell"
 
 build:
 	docker-compose build
@@ -21,11 +21,8 @@ shell:
 run:
 	docker-compose run app $(COMMAND)
 
-test-generate:
-	docker-compose run app bash < schema_generator.sh
-
-generate:
-	docker-compose run app ./schema_generator.sh
+test-script:
+	docker-compose run app bash < $(SCRIPT)
 
 stop:
 	docker-compose down
